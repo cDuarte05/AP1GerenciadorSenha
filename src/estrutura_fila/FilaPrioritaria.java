@@ -1,9 +1,9 @@
 package estrutura_fila;
 
-public class FilaComum {
+public class FilaPrioritaria {
 	    ListaLigada fila;
 
-	    public FilaComum(){
+	    public FilaPrioritaria(){
 	        this.fila = new ListaLigada();
 	    }
 	    
