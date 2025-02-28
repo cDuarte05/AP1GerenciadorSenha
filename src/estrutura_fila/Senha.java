@@ -3,13 +3,13 @@ import java.time.LocalDateTime;
 
 public class Senha {
 	
-	private String tipo;
+	private String tipo; //ainda to pensando se uso string ou boolean
 	private int tentativas;
-	private String status;
+	private String status; //ainda to pensando se uso string ou boolean
 	private LocalDateTime horaChegada;
 	private LocalDateTime horaSaida;
 	
-	public Senha(String tipo,String status, LocalDateTime horaChegada) {
+	public Senha(String tipo,String status) {
 		this.tipo = tipo;
 		this.status = status;
 		this.horaChegada = LocalDateTime.now(); //registra a hora do começo automaticamente
@@ -51,4 +51,6 @@ public class Senha {
     public void setHoraSaida() {
         this.horaSaida = LocalDateTime.now();
     }
+    
+    
 }
