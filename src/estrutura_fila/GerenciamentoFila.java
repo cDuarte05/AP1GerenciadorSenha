@@ -36,7 +36,6 @@ public class GerenciamentoFila {
 		if(tentativas >2) {
 			filaSumidos.adicionar(senha);
 			filaPrioritaria.remover();
-			//remover a senha da fila
 		}
 	}
 	

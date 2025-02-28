@@ -8,12 +8,14 @@ public class Senha {
 	private String status; //ainda to pensando se uso string ou boolean
 	private LocalDateTime horaChegada;
 	private LocalDateTime horaSaida;
+	private int numeroSenha;
 	
-	public Senha(String tipo,String status) {
+	public Senha(String tipo,String status, int numeroSenha) {
 		this.tipo = tipo;
 		this.status = status;
 		this.horaChegada = LocalDateTime.now(); //registra a hora do começo automaticamente
 		this.tentativas = 0; //inicio
+		this.numeroSenha = numeroSenha;
 	}
 	
 	public String getTipo() {
@@ -52,5 +54,11 @@ public class Senha {
         this.horaSaida = LocalDateTime.now();
     }
     
+    public int getNumeroSenha() {
+    	return numeroSenha;
+    }
     
+    public String toString() {
+    	return "Senha [" + numeroSenha + "] - " + tipo;
+    }
 }

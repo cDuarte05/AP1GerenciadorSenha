@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import estrutura_fila.FilaComum;
 import estrutura_fila.FilaPrioritaria;
+import estrutura_fila.FilaSumidos;
 import estrutura_fila.GerenciamentoFila;
 import estrutura_fila.Senha;
 
@@ -12,6 +13,7 @@ public class Menu {
 	GerenciamentoFila gerenciamento;
 	FilaPrioritaria filaPrioritaria;
 	FilaComum filaComum;
+	FilaSumidos filaSumidos;
 	Senha senha;
 	Scanner sc = new Scanner(System.in);
 	int opc;
@@ -21,6 +23,7 @@ public class Menu {
 		filaPrioritaria = new FilaPrioritaria();
 		filaComum = new FilaComum();
 		gerenciamento = new GerenciamentoFila();
+		filaSumidos = new FilaSumidos();
 	}
 	
 	public void menu() {
@@ -37,23 +40,37 @@ public class Menu {
 		    
 		    switch (opc) {
 		        case 1:
-		        	senha = new Senha("Comum","Ativa");
+		        	totalSenhaNormal++;
+		        	senha = new Senha("Comum","Ativa",totalSenhaNormal);
 		        	filaComum.adicionar(senha);
 		            System.out.println("\nSenha normal gerada.");
-		            totalSenhaNormal++;
 		            break;
 		        case 2:
-		        	senha = new Senha("Prioritaria","Ativa");
+		        	totalSenhaPreferencial++;
+		        	senha = new Senha("Prioritaria","Ativa",totalSenhaPreferencial);
 		        	filaPrioritaria.adicionar(senha);
 		            System.out.println("\nsenha preferencial gerada.");
-		            totalSenhaPreferencial++;
 		            break;
 		        case 3:
 		        	Senha senhaChamada = gerenciamento.ordemChamada();
-		        	if(senhaChamada == null) {
-		        		System.out.println("Filas vazias!");
+		        	if(!(senhaChamada == null)) {
+		        		char resp;
+		        		do {
+			        		System.out.println("Chamando senha: " + senha + " Tipo: " + senhaChamada.getTipo()); // ainda não sei como fazer pra atribuir um valor de posição a cada senha e se realmente precisa
+			        		System.out.println("A senha foi respondida? (s/n)");
+			        		resp = sc.next().toLowerCase().charAt(0); //garantir que seja a primeira e minuscula
+			        		if(resp == 's') {
+			        			int tentativas = 0;
+			        			tentativas++;
+			        			senha.setTentativas(tentativas);
+			        		}
+			        		// ja aqui eu preciso também dar um jeito de remover e colocar numa outra classe nova chamada lista atendidos 
+		        		}while(resp == 's' || (senha.getTentativas() <= 3));
+		        		System.out.println("Senha não respondida!");
+		        		filaSumidos.adicionar(senhaChamada);
+		        		//preciso agora dar um jeito de remover a senha chamada estou pensando em usar o .contemItem e verificar o tipo e depois remover e colocar na classe FilaSumidos
 		        	}else {
-		        		System.out.println("Chamando senha + "); // ainda não sei como fazer pra atribuir um valor de posição a cada senha e se realmente precisa
+	        		System.out.println("Filas vazias!");
 		        	}
 		            break;
 		        case 4:
