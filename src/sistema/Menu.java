@@ -56,7 +56,7 @@ public class Menu {
 		            System.out.println("\nsenha preferencial gerada.");
 		            break;
 		        case 3:
-		        	Senha senhaChamada = gerenciamento.ordemChamada();
+		        	Senha senhaChamada = gerenciamento.ordemChamada(filaPrioritaria,filaComum);
 		        	if(!(senhaChamada == null)) {
 		        		int tentativas = senhaChamada.getTentativas(); 
 		        		char resp;
@@ -84,7 +84,7 @@ public class Menu {
 		        	break;
 		        	
 		        case 4:
-		            System.out.println("\nListando senhas na fila.");
+		            gerenciamento.listarSenhas(filaPrioritaria, filaComum);
 		            break;
 		        case 5:
 		            System.out.println("\nGerando relatório...");

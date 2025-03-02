@@ -18,7 +18,7 @@ public class GerenciamentoFila {
 		return (!(filaComum.estaVazia() && filaPrioritaria.estaVazia())); //retorna true se não estão vazias
 	}
 		
-	public Senha ordemChamada() {
+	public Senha ordemChamada(FilaPrioritaria filaPrioritaria, FilaComum filaComum) {
 		if (!filasVazias()) {
 			if(filaPrioritaria.estaVazia()) {
 				return filaComum.fila.pegarNaPosicao(0);
@@ -33,12 +33,14 @@ public class GerenciamentoFila {
 	
 	public void atendidaPrioritaria(Senha senhaChamada) {
 		senhaChamada.setStatus("Atendida");
+		senhaChamada.setHoraSaida();
 		filaAtendidos.adicionar(senhaChamada);
 		filaPrioritaria.remover();
 	}
 	
 	public void atendidaComum(Senha senhaChamada) {
 		senhaChamada.setStatus("Atendida");
+		senhaChamada.setHoraSaida();
 		filaAtendidos.adicionar(senhaChamada);
 		filaComum.remover();
 	}
@@ -79,16 +81,24 @@ public class GerenciamentoFila {
 	}
 	
 	public void listarSenhas(FilaPrioritaria filaPrioritaria, FilaComum filaComum) {
-		System.out.println("Listando senhas na fila");
-		System.out.println("Fila prioritaria: ");
-		int tam = filaPrioritaria.tamanho();
-		for(int i = 0; i<=tam; i++) {
-			System.out.println(filaPrioritaria.fila.pegarNaPosicao(i));
-		}
-		System.out.println();
-		tam = filaComum.tamanho();
-		for(int i = 0; i<=tam; i++) {
-			System.out.println(filaComum.fila.pegarNaPosicao(i));
-		} //falta testar
+		int tam;
+		if(!filaPrioritaria.estaVazia()) {
+			System.out.println("Listando senhas na fila");
+			System.out.println();
+			System.out.println("Fila prioritaria: ");
+			tam = filaPrioritaria.tamanho();
+			for(int i = 0; i<tam; i++) {
+				System.out.println(filaPrioritaria.fila.pegarNaPosicao(i));
+			}
+		}else System.out.println("Fila prioritaria vazia");
+		
+		if(!filaComum.estaVazia()) {
+			System.out.println();
+			System.out.println("Fila comum: ");
+			tam = filaComum.tamanho();
+			for(int i = 0; i<tam; i++) {
+				System.out.println(filaComum.fila.pegarNaPosicao(i));
+			} //falta testar
+		}else System.out.println("Fila comum vazia");
 	}
 }
