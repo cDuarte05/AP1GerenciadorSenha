@@ -49,35 +49,39 @@ public class Menu {
 		        	filaComum.adicionar(senha);
 		            System.out.println("\nSenha normal gerada.");
 		            break;
+		            
 		        case 2:
 		        	totalSenhaPreferencial++;
 		        	senha = new Senha("Prioritaria","Ativa",totalSenhaPreferencial);
 		        	filaPrioritaria.adicionar(senha);
 		            System.out.println("\nsenha preferencial gerada.");
 		            break;
+		            
 		        case 3:
 		        	Senha senhaChamada = gerenciamento.ordemChamada(filaPrioritaria,filaComum);
 		        	if(!(senhaChamada == null)) {
 		        		int tentativas = senhaChamada.getTentativas(); 
 		        		char resp;
 		        		do {
-			        		System.out.println("Chamando senha: " + senha); 
+			        		System.out.println("Chamando senha: " + senhaChamada); 
 			        		System.out.println("A senha foi respondida? (s/n)");
 			        		resp = sc.next().toLowerCase().charAt(0); //garantir que seja a primeira e minuscula
 			        		
 			        		if(resp == 'n') {
 			        			tentativas++;
-			        			senha.setTentativas(tentativas);
+			        			senhaChamada.setTentativas(tentativas);
 			        		}
 			        		
 			        		if(resp =='s') {
 			        			gerenciamento.atenderRemover(senhaChamada); //esse metodo vai remover da fila e colocar na fila de já atendido
+			        			break;
 			        		}
 			        		
-		        		}while (tentativas < 4); //esse do while tem algo errado
+		        		}while (resp == 'n' && tentativas <= 3); //esse do while tem algo errado
 		        		
-		        		gerenciamento.removerRealocarSumidos(senhaChamada);
-		        		
+		        		if(tentativas == 3) {
+		        			gerenciamento.removerRealocarSumidos(senhaChamada);
+		        		}
 		        	}else {
 		        		System.out.println("Filas vazias!");
 		        	}		        		

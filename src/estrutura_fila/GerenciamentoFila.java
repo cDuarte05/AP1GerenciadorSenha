@@ -34,8 +34,8 @@ public class GerenciamentoFila {
 	public void atendidaPrioritaria(Senha senhaChamada) {
 		senhaChamada.setStatus("Atendida");
 		senhaChamada.setHoraSaida();
-		filaAtendidos.adicionar(senhaChamada);
 		filaPrioritaria.remover();
+		filaAtendidos.adicionar(senhaChamada);
 	}
 	
 	public void atendidaComum(Senha senhaChamada) {
