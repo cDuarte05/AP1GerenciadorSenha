@@ -2,6 +2,7 @@ package sistema;
 
 import java.util.Scanner;
 
+import estrutura_fila.FilaAtendidos;
 import estrutura_fila.FilaComum;
 import estrutura_fila.FilaPrioritaria;
 import estrutura_fila.FilaSumidos;
@@ -14,16 +15,19 @@ public class Menu {
 	FilaPrioritaria filaPrioritaria;
 	FilaComum filaComum;
 	FilaSumidos filaSumidos;
+	FilaAtendidos filaAtendidos;
 	Senha senha;
 	Scanner sc = new Scanner(System.in);
 	int opc;
 	int totalSenhaNormal, totalSenhaPreferencial; //criei duas diferentes pensando que talvez possa ser util saber quantas de cada
+
 	
 	public Menu() {
 		filaPrioritaria = new FilaPrioritaria();
 		filaComum = new FilaComum();
 		gerenciamento = new GerenciamentoFila();
 		filaSumidos = new FilaSumidos();
+		filaAtendidos = new FilaAtendidos();
 	}
 	
 	public void menu() {
@@ -54,27 +58,33 @@ public class Menu {
 		        case 3:
 		        	Senha senhaChamada = gerenciamento.ordemChamada();
 		        	if(!(senhaChamada == null)) {
+		        		int tentativas = senhaChamada.getTentativas(); 
 		        		char resp;
 		        		do {
-			        		System.out.println("Chamando senha: " + senha + " Tipo: " + senhaChamada.getTipo()); // ainda não sei como fazer pra atribuir um valor de posição a cada senha e se realmente precisa
+			        		System.out.println("Chamando senha: " + senha); 
 			        		System.out.println("A senha foi respondida? (s/n)");
 			        		resp = sc.next().toLowerCase().charAt(0); //garantir que seja a primeira e minuscula
-			        		if(resp == 's') {
-			        			int tentativas = 0;
+			        		
+			        		if(resp == 'n') {
 			        			tentativas++;
 			        			senha.setTentativas(tentativas);
 			        		}
-			        		// ja aqui eu preciso também dar um jeito de remover e colocar numa outra classe nova chamada lista atendidos 
-		        		}while(resp == 's' || (senha.getTentativas() <= 3));
-		        		System.out.println("Senha não respondida!");
-		        		filaSumidos.adicionar(senhaChamada);
-		        		//preciso agora dar um jeito de remover a senha chamada estou pensando em usar o .contemItem e verificar o tipo e depois remover e colocar na classe FilaSumidos
+			        		
+			        		if(resp =='s') {
+			        			gerenciamento.atenderRemover(senhaChamada); //esse metodo vai remover da fila e colocar na fila de já atendido
+			        		}
+			        		
+		        		}while (tentativas < 4); //esse do while tem algo errado
+		        		
+		        		gerenciamento.removerRealocarSumidos(senhaChamada);
+		        		
 		        	}else {
-	        		System.out.println("Filas vazias!");
-		        	}
-		            break;
+		        		System.out.println("Filas vazias!");
+		        	}		        		
+		        	break;
+		        	
 		        case 4:
-		            System.out.println("\nListando senhas na fila...");
+		            System.out.println("\nListando senhas na fila.");
 		            break;
 		        case 5:
 		            System.out.println("\nGerando relatório...");
