@@ -2,10 +2,10 @@ package estrutura_fila;
 
 public class GerenciamentoFila {
 
-	FilaPrioritaria filaPrioritaria;
-	FilaComum filaComum;
-	FilaSumidos filaSumidos;
-	FilaAtendidos filaAtendidos;
+	public static FilaPrioritaria filaPrioritaria;
+	public static FilaComum filaComum;
+	public static FilaSumidos filaSumidos;
+	public static FilaAtendidos filaAtendidos;
 	
 	public GerenciamentoFila() {
 		filaPrioritaria = new FilaPrioritaria();
@@ -15,10 +15,10 @@ public class GerenciamentoFila {
 	}
 	
 	public boolean filasVazias() {
-		return (!(filaComum.estaVazia() && filaPrioritaria.estaVazia())); //retorna true se não estão vazias
+		return ((filaComum.estaVazia() && filaPrioritaria.estaVazia())); //retorna true se estão vazias
 	}
 		
-	public Senha ordemChamada(FilaPrioritaria filaPrioritaria, FilaComum filaComum) {
+	public Senha ordemChamada() {
 		if (!filasVazias()) {
 			if(filaPrioritaria.estaVazia()) {
 				return filaComum.fila.pegarNaPosicao(0);
@@ -56,7 +56,7 @@ public class GerenciamentoFila {
 	public void naoAtendiasPrioritaria() {
 		Senha senha = filaPrioritaria.fila.pegarNaPosicao(0);
 		int tentativas = senha.getTentativas();
-		if(tentativas >3) {
+		if(tentativas >= 3) {
 			filaSumidos.adicionar(senha);
 			filaPrioritaria.remover();
 		}
@@ -65,7 +65,7 @@ public class GerenciamentoFila {
 	public void naoAtendiasComum() {
 		Senha senha = filaComum.fila.pegarNaPosicao(0);
 		int tentativas = senha.getTentativas();
-		if(tentativas >2) {
+		if(tentativas >= 3) {
 			filaSumidos.adicionar(senha);
 			filaComum.remover();
 		}
@@ -80,7 +80,7 @@ public class GerenciamentoFila {
 		}
 	}
 	
-	public void listarSenhas(FilaPrioritaria filaPrioritaria, FilaComum filaComum) {
+	public void listarSenhas() {
 		int tam;
 		if(!filaPrioritaria.estaVazia()) {
 			System.out.println("Listando senhas na fila");
@@ -98,7 +98,7 @@ public class GerenciamentoFila {
 			tam = filaComum.tamanho();
 			for(int i = 0; i<tam; i++) {
 				System.out.println(filaComum.fila.pegarNaPosicao(i));
-			} //falta testar
+			} //falta testar -> parece que tá tudo funcionando doq você fez, mas tive que arrumar várias coisinhas de lógica
 		}else System.out.println("Fila comum vazia");
 	}
 }
