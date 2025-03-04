@@ -2,32 +2,20 @@ package sistema;
 
 import java.util.Scanner;
 
-import estrutura_fila.FilaAtendidos;
-import estrutura_fila.FilaComum;
-import estrutura_fila.FilaPrioritaria;
-import estrutura_fila.FilaSumidos;
 import estrutura_fila.GerenciamentoFila;
 import estrutura_fila.Senha;
 
 public class Menu {
 	
 	GerenciamentoFila gerenciamento;
-	FilaPrioritaria filaPrioritaria;
-	FilaComum filaComum;
-	FilaSumidos filaSumidos;
-	FilaAtendidos filaAtendidos;
 	Senha senha;
 	Scanner sc = new Scanner(System.in);
 	int opc;
-	int totalSenhaNormal, totalSenhaPreferencial; //criei duas diferentes pensando que talvez possa ser util saber quantas de cada
+	int totalSenhaNormal, totalSenhaPreferencial; //criei duas diferentes pensando que talvez possa ser util saber quantas de cada -> vai ser util, ele pede o percentual de cada
 
 	
 	public Menu() {
-		filaPrioritaria = new FilaPrioritaria();
-		filaComum = new FilaComum();
 		gerenciamento = new GerenciamentoFila();
-		filaSumidos = new FilaSumidos();
-		filaAtendidos = new FilaAtendidos();
 	}
 	
 	public void menu() {
@@ -40,25 +28,31 @@ public class Menu {
 		    System.out.println("5. Gerar relatório");
 		    System.out.println("6. Sair do programa");
 		    System.out.println("Digite sua escolha: ");
-		    opc = sc.nextInt();
+		    try {
+				opc = sc.nextInt();				
+			} catch (Exception e) {
+				System.out.println("Excessão:Linha: 34 Classe: Menu - " + e);
+				break;
+			}
+			
 		    
 		    switch (opc) {
 		        case 1:
 		        	totalSenhaNormal++;
 		        	senha = new Senha("Comum","Ativa",totalSenhaNormal);
-		        	filaComum.adicionar(senha);
+		        	GerenciamentoFila.filaComum.adicionar(senha);
 		            System.out.println("\nSenha normal gerada.");
 		            break;
 		            
 		        case 2:
 		        	totalSenhaPreferencial++;
 		        	senha = new Senha("Prioritaria","Ativa",totalSenhaPreferencial);
-		        	filaPrioritaria.adicionar(senha);
+		        	GerenciamentoFila.filaPrioritaria.adicionar(senha);
 		            System.out.println("\nsenha preferencial gerada.");
 		            break;
 		            
 		        case 3:
-		        	Senha senhaChamada = gerenciamento.ordemChamada(filaPrioritaria,filaComum);
+		        	Senha senhaChamada = gerenciamento.ordemChamada();
 		        	if(!(senhaChamada == null)) {
 		        		int tentativas = senhaChamada.getTentativas(); 
 		        		char resp;
@@ -77,21 +71,23 @@ public class Menu {
 			        			break;
 			        		}
 			        		
-		        		}while (resp == 'n' && tentativas <= 3); //esse do while tem algo errado
+		        		} while (resp == 'n' && tentativas < 3); //esse do while tem algo errado -> a primeira tentativa é 0, segunda 1, terceira 2, ent devia só ser tentativa < 3
 		        		
-		        		if(tentativas == 3) {
+		        		if(tentativas >= 3) {
 		        			gerenciamento.removerRealocarSumidos(senhaChamada);
 		        		}
-		        	}else {
+		        	} else {
 		        		System.out.println("Filas vazias!");
 		        	}		        		
 		        	break;
 		        	
 		        case 4:
-		            gerenciamento.listarSenhas(filaPrioritaria, filaComum);
+		            gerenciamento.listarSenhas();
 		            break;
 		        case 5:
-		            System.out.println("\nGerando relatório...");
+					Relatorio relatorio = Relatorio.pegarInstancia();
+					relatorio = Relatorio.gerarRelatorio(totalSenhaNormal, totalSenhaPreferencial);
+					Relatorio.imprimirRelatorio(relatorio, totalSenhaNormal, totalSenhaPreferencial);
 		            break;
 		        case 6:
 		            System.out.println("\nSaindo do programa...");
