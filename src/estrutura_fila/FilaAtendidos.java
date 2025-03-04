@@ -1,7 +1,7 @@
 package estrutura_fila;
 
 public class FilaAtendidos {
-	    ListaLigada fila;
+	    public ListaLigada fila; // Não sei porque, mas tive que colocar public pra funcionar na classe de relatório, acho que é treta com package (?)
 
 	    public FilaAtendidos(){
 	        this.fila = new ListaLigada();
