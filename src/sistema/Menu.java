@@ -7,7 +7,6 @@ import estrutura_fila.Senha;
 
 public class Menu {
 	
-	GerenciamentoFila gerenciamento;
 	Senha senha;
 	Scanner sc = new Scanner(System.in);
 	int opc;
@@ -15,7 +14,7 @@ public class Menu {
 
 	
 	public Menu() {
-		gerenciamento = new GerenciamentoFila();
+		GerenciamentoFila.inicializarFilas();
 	}
 	
 	public void menu() {
@@ -52,7 +51,7 @@ public class Menu {
 		            break;
 		            
 		        case 3:
-		        	Senha senhaChamada = gerenciamento.ordemChamada();
+		        	Senha senhaChamada = GerenciamentoFila.ordemChamada();
 		        	if(!(senhaChamada == null)) {
 		        		int tentativas = senhaChamada.getTentativas(); 
 		        		char resp;
@@ -67,14 +66,14 @@ public class Menu {
 			        		}
 			        		
 			        		if(resp =='s') {
-			        			gerenciamento.atenderRemover(senhaChamada); //esse metodo vai remover da fila e colocar na fila de já atendido
+			        			GerenciamentoFila.atenderRemover(senhaChamada); //esse metodo vai remover da fila e colocar na fila de já atendido
 			        			break;
 			        		}
 			        		
 		        		} while (resp == 'n' && tentativas < 3); //esse do while tem algo errado -> a primeira tentativa é 0, segunda 1, terceira 2, ent devia só ser tentativa < 3
 		        		
 		        		if(tentativas >= 3) {
-		        			gerenciamento.removerRealocarSumidos(senhaChamada);
+		        			GerenciamentoFila.removerRealocarSumidos(senhaChamada);
 		        		}
 		        	} else {
 		        		System.out.println("Filas vazias!");
@@ -82,7 +81,7 @@ public class Menu {
 		        	break;
 		        	
 		        case 4:
-		            gerenciamento.listarSenhas();
+		            GerenciamentoFila.listarSenhas();
 		            break;
 		        case 5:
 					Relatorio relatorio = Relatorio.pegarInstancia();
