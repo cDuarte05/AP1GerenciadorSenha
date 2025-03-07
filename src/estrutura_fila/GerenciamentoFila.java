@@ -2,10 +2,10 @@ package estrutura_fila;
 
 public class GerenciamentoFila { //singleton
 
-	public static FilaPrioritaria filaPrioritaria;
-	public static FilaComum filaComum;
-	public static FilaSumidos filaSumidos;
-	public static FilaAtendidos filaAtendidos;
+	public static FilaPrioritaria filaPrioritaria = null;
+	public static FilaComum filaComum = null;
+	public static FilaSumidos filaSumidos = null;
+	public static FilaAtendidos filaAtendidos = null;
 
 	private static GerenciamentoFila instancia;
 	
@@ -23,10 +23,15 @@ public class GerenciamentoFila { //singleton
 		return instancia; 
 	}
 
-	public static void inicializarFilas() {
-		if (instancia == null) {
-			instancia = new GerenciamentoFila();
-		} 
+	public static void inicializarFilas () {
+		instancia = new GerenciamentoFila();
+	}
+
+	public static void esvaziarFilas () {
+		filaAtendidos = null;
+		filaComum = null;
+		filaPrioritaria = null;
+		filaSumidos = null;
 	}
 
 	public static boolean filasVazias() {
@@ -49,8 +54,8 @@ public class GerenciamentoFila { //singleton
 	public static void atendidaPrioritaria(Senha senhaChamada) {
 		senhaChamada.setStatus("Atendida");
 		senhaChamada.setHoraSaida();
-		filaPrioritaria.remover();
 		filaAtendidos.adicionar(senhaChamada);
+		filaPrioritaria.remover();
 	}
 	
 	public static void atendidaComum(Senha senhaChamada) {
@@ -68,7 +73,7 @@ public class GerenciamentoFila { //singleton
 		}
 	}
 	
-	public static void naoAtendiasPrioritaria() {
+	public static void naoAtendidasPrioritaria() {
 		Senha senha = filaPrioritaria.fila.pegarNaPosicao(0);
 		int tentativas = senha.getTentativas();
 		if(tentativas >= 3) {
@@ -77,7 +82,7 @@ public class GerenciamentoFila { //singleton
 		}
 	}
 	
-	public static void naoAtendiasComum() {
+	public static void naoAtendidasComum() {
 		Senha senha = filaComum.fila.pegarNaPosicao(0);
 		int tentativas = senha.getTentativas();
 		if(tentativas >= 3) {
@@ -89,9 +94,9 @@ public class GerenciamentoFila { //singleton
 	public static void removerRealocarSumidos(Senha senhaChamada) { //esse metodo serve para fazer a realocação de senhas 
 		senhaChamada.setStatus("Não atendida");
 		if(senhaChamada.getTipo() == "Prioritaria" ) { //confere se é prioritaria e se for, chama o metodo que muda o status, adiciona na fila de atendidos e remove.
-			naoAtendiasPrioritaria();
+			naoAtendidasPrioritaria();
 		}else if(senhaChamada.getTipo() == "Comum" ) {
-			naoAtendiasComum();
+			naoAtendidasComum();
 		}
 	}
 	
@@ -113,7 +118,7 @@ public class GerenciamentoFila { //singleton
 			tam = filaComum.tamanho();
 			for(int i = 0; i<tam; i++) {
 				System.out.println(filaComum.fila.pegarNaPosicao(i));
-			} //falta testar -> parece que tá tudo funcionando doq você fez, mas tive que arrumar várias coisinhas de lógica
+			} 
 		}else System.out.println("Fila comum vazia");
 	}
 }
