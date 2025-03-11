@@ -30,8 +30,8 @@ public class Menu {
 		    try {
 				opc = sc.nextInt();				
 			} catch (Exception e) {
-				System.out.println("Excessão:Linha: 34 Classe: Menu - " + e);
-				break;
+				sc.next().charAt(0);
+				System.out.println("Carácter inválido, por favor, use um número.\nExcessão: " + e);
 			}
 			
 		    
@@ -70,7 +70,7 @@ public class Menu {
 			        			break;
 			        		}
 			        		
-		        		} while (resp == 'n' && tentativas < 3); //esse do while tem algo errado -> a primeira tentativa é 0, segunda 1, terceira 2, ent devia só ser tentativa < 3
+		        		} while (resp != 's' && tentativas < 3); //esse do while tem algo errado -> a primeira tentativa é 0, segunda 1, terceira 2, ent devia só ser tentativa < 3
 		        		
 		        		if(tentativas >= 3) {
 		        			GerenciamentoFila.removerRealocarSumidos(senhaChamada);
